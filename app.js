@@ -8,6 +8,7 @@ const privateConstants = require('./private-constants');
 // Routes Import
 const AuthController = require('./Controller/AuthController');
 const TweetController = require('./Controller/TweetController');
+const FollowController = require('./Controller/FollowController');
 
 const app = express();
 
@@ -45,6 +46,7 @@ app.get('/', (req, res) => {
 // Router
 app.use('/auth', AuthController);
 app.use('/tweet', TweetController);
+app.use('/follow', FollowController);
 
 app.listen(process.env.PORT || 3000, () => {
     console.log(`Lisetening on Port 3000`);

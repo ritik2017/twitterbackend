@@ -26,7 +26,7 @@ let User = class {
                 const user = await UserSchema.findOne({$or: [{username}, {email}]});
 
                 if(!user) 
-                    return resolve();
+                    return resolve(user);
 
                 if(user && user.email === email) {
                     return reject("User with email already exists");
@@ -37,6 +37,22 @@ let User = class {
                 }
 
                 return reject('Some unknown error occured');                
+            }
+            catch(err) {
+                return reject(err);
+            }
+        })
+    }
+
+    static verifyUserIdExists(userId) {
+        return new Promise(async (resolve, reject) => {
+            try {
+                const dbUser = await UserSchema.findOne({_id: userId});
+
+                if(!dbUser)
+                    return reject("User does not exist");
+                
+                resolve(dbUser);
             }
             catch(err) {
                 return reject(err);

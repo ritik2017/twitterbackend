@@ -1,5 +1,6 @@
 const { reject } = require('bcrypt/promises');
 const TweetSchema = require('../Schemas/TweetSchema');
+const constants = require('../constants');
 
 const Tweet = class {
     tweetId;
@@ -99,6 +100,24 @@ const Tweet = class {
             }
 
         })
+    }
+
+    static getRecentTweets(offset) {
+        return new Promise(async (resolve, reject) => {
+            try {
+                const dbTweets = await TweetSchema.aggregate([
+                    {$sort: {"creationDatetime": -1 } },
+                    {$facet: {
+                        data: [{$skip: parseInt(offset)}, {$limit: constants.TWEETLIMIT}]
+                    }}
+                ])
+    
+                return resolve(dbTweets[0].data);
+            }
+            catch(err) {
+                return reject(err);
+            }
+        })  
     }
 }
 

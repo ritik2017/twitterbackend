@@ -91,7 +91,7 @@ tweet.post('/update', checkAuth, async (req, res) => {
     const userId = req.session.user.userId;
 
     // Check for valid data
-    if(!title && !text) {
+    if(!title && !text && !tweetId) {
         return res.send({
             status: 401, 
             message: "Invalid request parameters",
@@ -241,6 +241,29 @@ tweet.post('/delete', checkAuth, async (req, res) => {
             error: err
         })
     }
+})
+
+tweet.get('/recent', async (req, res) => {
+
+    const offset = req.query.offset || 0;
+
+    try {
+        const dbTweets = await TweetModel.getRecentTweets(offset);
+
+        return res.send({
+            status: 200,
+            message: "Read successful",
+            data: dbTweets
+        })
+    }
+    catch(err) {
+        return res.send({
+            status: 400,
+            message: "Internal server error. Please try again",
+            error: err
+        })
+    }
+
 })
 
 tweet.get('/*', (req, res) => {
