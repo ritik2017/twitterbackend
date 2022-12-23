@@ -2,6 +2,7 @@ const express = require('express');
 const session = require('express-session');
 const MongoDBSession = require('connect-mongodb-session')(session);
 const mongoose = require('mongoose');
+const cors = require('cors');
 
 const privateConstants = require('./private-constants');
 
@@ -11,6 +12,10 @@ const TweetController = require('./Controller/TweetController');
 const FollowController = require('./Controller/FollowController');
 
 const app = express();
+
+app.use(cors({
+    origin: '*'
+}))
 
 // Connect to database
 mongoose.connect(privateConstants.MONGODBURI, {
