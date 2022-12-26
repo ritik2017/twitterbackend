@@ -86,9 +86,9 @@ tweet.post('/create', async (req, res) => {
 
 })
 
-tweet.post('/update', checkAuth, async (req, res) => {
+tweet.post('/update', async (req, res) => {
     const {title, text, tweetId} = req.body;
-    const userId = req.session.user.userId;
+    const userId = req.body.userId;
 
     // Check for valid data
     if(!title && !text && !tweetId) {
@@ -183,7 +183,7 @@ tweet.post('/update', checkAuth, async (req, res) => {
 
 })
 
-tweet.post('/delete', checkAuth, async (req, res) => {
+tweet.post('/delete', async (req, res) => {
 
     const { tweetId } = req.body;
 
@@ -194,7 +194,7 @@ tweet.post('/delete', checkAuth, async (req, res) => {
         })
     }
 
-    const userId = req.session.user.userId;
+    const userId = req.body.userId;
 
     let dbTweet;
     try {
