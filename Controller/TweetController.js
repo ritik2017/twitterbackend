@@ -5,9 +5,9 @@ const TweetModel = require('../Models/TweetModel');
 
 const tweet = express.Router();
 
-tweet.post('/create', checkAuth, async (req, res) => {
+tweet.post('/create', async (req, res) => {
     const { title, text } = req.body;
-    const userId = req.session.user.userId;
+    const userId = req.body.userId;
     const creationDatetime = new Date();
 
     // Check for valid parameters
@@ -35,24 +35,24 @@ tweet.post('/create', checkAuth, async (req, res) => {
 
     // Check number of tweets by user
 
-    let tweetCount;
-    try {
-        tweetCount = await TweetModel.countTweetsOfUser(userId);
-    }
-    catch(err) {
-        return res.send({
-            status: 401,
-            message: "Database error",
-            error: err
-        })
-    }
+    // let tweetCount;
+    // try {
+    //     tweetCount = await TweetModel.countTweetsOfUser(userId);
+    // }
+    // catch(err) {
+    //     return res.send({
+    //         status: 401,
+    //         message: "Database error",
+    //         error: err
+    //     })
+    // }
     
-    if(tweetCount >= 1000) {
-        return res.send({
-            status: 400,
-            message: "You have already created 1000 tweets. Please try creating new tweets after deleting your old tweets"
-        })
-    }
+    // if(tweetCount >= 1000) {
+    //     return res.send({
+    //         status: 400,
+    //         message: "You have already created 1000 tweets. Please try creating new tweets after deleting your old tweets"
+    //     })
+    // }
 
     const tweet = new TweetModel({
         userId,
